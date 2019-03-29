@@ -1,9 +1,9 @@
 # ui.R
 library(shiny)
+library(leaflet)
 
 # Define UI for miles per gallon application
 shinyUI(fluidPage( 
-  
   # Application title
   headerPanel("Coral Bleaching Data"),
   
@@ -19,14 +19,14 @@ shinyUI(fluidPage(
                     "Hard corals" = "hard corals")
       ),
       selectInput("color", "Select a color of smoother:", 
-                  c("Black" = "black", 
+                  c("Green" = "green",
+                    "Black" = "black", 
                     "Blue" = "blue",
-                    "Red" = "red",
-                    "Green" = "green")
+                    "Red" = "red")
       ),
       selectInput("smootherMethod", "Select a method of smoother:", 
-                  c("auto" = "auto", 
-                    "lm" = "lm",
+                  c("lm" = "lm",
+                    "auto" = "auto", 
                     "glm" = "glm",
                     "gam" = "gam",
                     "loess"="loess")
@@ -39,4 +39,7 @@ shinyUI(fluidPage(
       plotOutput("mpgPlot")
     )
   )
+  ,
+  headerPanel("Map for Coral Bleaching Data"),
+  leafletOutput("coralMap")
 ))
