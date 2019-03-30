@@ -1,6 +1,7 @@
 library(shiny)
 library(datasets)
 library(ggplot2) # load ggplot
+library(leaflet)
 
 coralData <- read.csv('./assignment-02-data-formated.csv')
 
@@ -38,7 +39,6 @@ shinyServer(function(input, output) {
   })
   
   check <- function(x) {
-    print("~~~")
     iconColor =  ifelse(x=="site01", "red", 
                         ifelse(x=="site02","blue",
                                ifelse(x=="site03","green",
@@ -53,9 +53,8 @@ shinyServer(function(input, output) {
     return(result)
   }
   
-  output$coralMap <- renderLeaflet({ # create leaflet map
-    leaflet(data)  %>% addTiles()  %>%
-    addAwesomeMarkers(
+  output$coralMap <- renderLeaflet({ 
+    leaflet(coralData)  %>% addTiles()  %>% addAwesomeMarkers(
       ~longitude, 
       ~latitude, 
       popup = ~as.character(location),
