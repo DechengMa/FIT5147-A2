@@ -2,32 +2,40 @@ library(shiny)
 library(datasets)
 library(ggplot2) # load ggplot
 library(leaflet)
+library(scales)
+library(stringr)
 
 coralData <- read.csv('./assignment-02-data-formated.csv')
+
+
 
 shinyServer(function(input, output) {
   output$mpgPlot <- reactivePlot(function() {
     # check for the input variable
-   
+    options(digits=5)
     coralData <- data.frame(year = coralData$year, 
-                            value = coralData$value,
+                            # as.double(coralData$value)
+                            #  as.double (stri_sub(coralData$value, 1, -4))
+                            value = as.numeric(as.character(str_sub(coralData$value, 1, -2)))/100,
                             location = coralData$location,
                             latitude = coralData$latitude,
                             coralType = coralData$coralType)
     
     coralData <- subset(coralData, coralType == input$variable)
+    print(coralData$value / 100)
     
     p <- ggplot(coralData, aes(year, value, color = sample)) + 
       geom_point(aes(color = location)) +
-      scale_y_discrete(breaks = seq(0, 1, by = 0.2))  + 
+      scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
       facet_grid(coralType~reorder(location, latitude)) +
       xlab(input$variable) + 
-      theme(strip.text = element_text(colour = 'white')) +
+      theme(strip.text = element_text(colour = 'white'), axis.line = element_line(), axis.ticks.y = element_line(), ) +
       geom_smooth(aes(group = 1),
                   method = input$smootherMethod,
                   color = input$color,
                   formula = y~ poly(x, 2),
-                  se = FALSE)
+                  se = FALSE,
+                  size= 0.4)
     
     p <- p + scale_color_manual(values = c("site01" = "red", "site02" = "blue",  "site03" = "green",  "site04" = "darkgreen", "site05" = "black", "site06" = "yellow", "site07" = "orange", "site08" = "purple"))
     print(p)

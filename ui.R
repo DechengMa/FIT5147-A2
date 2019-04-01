@@ -12,16 +12,16 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("variable", "Select a type of coral:", 
-                  c("Blue corals" = "blue corals", 
+                  c("Sea pens" = "sea pens",
+                    "Blue corals" = "blue corals", 
                     "Sea fans" = "sea fans",
-                    "Sea pens" = "sea pens",
                     "Soft corals" = "soft corals",
                     "Hard corals" = "hard corals")
       ),
       selectInput("color", "Select a color of smoother:", 
-                  c("Green" = "green",
+                  c("Blue" = "blue",
+                    "Green" = "green",
                     "Black" = "black", 
-                    "Blue" = "blue",
                     "Red" = "red")
       ),
       selectInput("smootherMethod", "Select a method of smoother:", 
